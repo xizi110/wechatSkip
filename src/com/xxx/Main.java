@@ -62,7 +62,7 @@ public class Main {
                     Point stage_point = findStage(image, player_Point);
                     System.out.println("stage_point: " + stage_point);
                     double distance = Math.hypot(player_Point.x - stage_point.x, player_Point.y - stage_point.y);
-                    System.out.println("distance: "+distance);
+//                    System.out.println("distance: "+distance);
                     click(distance);
                 }
             }
