@@ -108,11 +108,11 @@ public class Main {
         Mat dest = new Mat();
         Imgproc.Laplacian(image,dest,image.depth(),3);
         Core.add(image,dest,image);
-        Imgcodecs.imwrite("C:/logs/ruihua.png",image);
+//        Imgcodecs.imwrite("C:/logs/ruihua.png",image);
 
         // 边缘检测
         Imgproc.Canny(image,image,50,128);
-        Imgcodecs.imwrite("C:/logs/stage_edge.png",image);
+//        Imgcodecs.imwrite("C:/logs/stage_edge.png",image);
 
         boolean isBreak = false;
         Point point = new Point();
