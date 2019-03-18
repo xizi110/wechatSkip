@@ -14,11 +14,14 @@ import java.util.Random;
 
 public class Main {
 
-    //跳跃速度参数
+    // 跳跃速度参数
     private final static double SPEED = 1.425;
-    //上传图片存储路径
+    // 上传图片存储路径
     private final static String PATH = "C:/logs/screen.png";
+    // 人物颜色(选取偏下部分,视觉上在方块中心的点)
+    private final static double[] PLAYER_BGR = new double[]{100,58,56};
 
+    // OpenCV本地库
     static {
         System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
     }
@@ -64,7 +67,11 @@ public class Main {
                     double distance = Math.hypot(player_Point.x - stage_point.x, player_Point.y - stage_point.y);
                     System.out.println("distance: "+distance);
                     click(distance);
+                }else {
+                    System.out.println("未发现玩家人物,请检查图片中是否包含玩家操控的人物,或者检查'PLAYER_BGR'的取值是否合适");
                 }
+            }else {
+                System.out.println("未读取到图片");
             }
         }
     }
@@ -120,7 +127,7 @@ public class Main {
         for (int row = 420; row < image.rows(); row++) {
             for (int col = 10; col < image.cols(); col++) {
 
-                //对于下一个方块位置低于操控人物的位置时，不进行比较
+                //对于操控人物左右70px的位置，不进行比较
                 if(col > player_Point.x-70 && col < player_Point.x+70){
                     continue;
                 }
@@ -153,18 +160,18 @@ public class Main {
         return point;
     }
 
-    // 寻找玩家位置
+    // 寻找玩家位置，找不到返回null
     private static Point findPlayer(Mat image){
-        double[] player_bgr = new double[]{100,58,56};
+
         boolean isFind = false;
         Point point = new Point();
         for (int row = image.height()-50; row >= 420 ; row--) {
 
             for (int col = 0; col < image.width(); col++) {
                 double[] bgr = image.get(row,col);
-                if(Math.abs(bgr[0]-player_bgr[0]) < 3 &&
-                   Math.abs(bgr[1]-player_bgr[1]) < 3 &&
-                   Math.abs(bgr[2]-player_bgr[2]) < 3){
+                if(Math.abs(bgr[0]-PLAYER_BGR[0]) < 3 &&
+                   Math.abs(bgr[1]-PLAYER_BGR[1]) < 3 &&
+                   Math.abs(bgr[2]-PLAYER_BGR[2]) < 3){
                     point.x = col;
                     point.y = row;
                     isFind = true;
